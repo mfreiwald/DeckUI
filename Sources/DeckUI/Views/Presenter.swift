@@ -187,7 +187,7 @@ public struct Presenter: View {
 
 
 public enum SlideTransition {
-    case horizontal, vertical
+    case horizontal, vertical, opacity
 }
 
 extension Optional where Wrapped == SlideTransition {
@@ -197,6 +197,8 @@ extension Optional where Wrapped == SlideTransition {
             return .slideFromTrailing
         case .vertical:
             return .slideFromBottom
+        case .opacity:
+            return .opacity
         case .none:
             return .identity
         }
@@ -208,6 +210,8 @@ extension Optional where Wrapped == SlideTransition {
             return .slideFromLeading
         case .vertical:
             return .slideFromTop
+        case .opacity:
+            return .opacity
         case .none:
             return .identity
         }

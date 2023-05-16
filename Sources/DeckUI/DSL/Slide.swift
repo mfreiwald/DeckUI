@@ -37,7 +37,7 @@ public struct Slide: Identifiable {
         )
     }
     
-    func buildView(theme: Theme) -> AnyView {
+    public func buildView(theme: Theme) -> AnyView {
         let themeToUse = self.theme ?? theme
         
         let contentItemViews = self.buildContentItems(theme: themeToUse)

@@ -67,38 +67,52 @@ open class PresentationState: ObservableObject {
         }
     public func nextSlide() {
         let slides = self.deck.slides()
+        var newIndex = slideIndex
         if slideIndex >= (slides.count - 1) {
             if self.loop {
-                slideIndex = 0
+                newIndex = 0
             }
         } else {
-            slideIndex += 1
+            newIndex += 1
         }
         
-        let nextSlide = slides[slideIndex]
+        let nextSlide = slides[newIndex]
         
         self.activeTransition = (nextSlide.transition ?? self.slideTransition).next
-        NotificationCenter.default.post(name: .slideChanged, object: nextSlide)
 
+        Task { @MainActor [newIndex] in
+            try await Task.sleep(nanoseconds: 0)
+            withAnimation {
+                slideIndex = newIndex
+                NotificationCenter.default.post(name: .slideChanged, object: nextSlide)
+            }
+        }
     }
     
     public func previousSlide() {
         let slides = self.deck.slides()
 
         let currentSlide = slides[slideIndex]
-        
+        var newIndex = slideIndex
         if slideIndex <= 0 {
             if self.loop {
-                slideIndex = slides.count - 1
+                newIndex = slides.count - 1
             }
         } else {
-            slideIndex -= 1
+            newIndex -= 1
         }
 
-        let previousSlide = slides[slideIndex]
+        let previousSlide = slides[newIndex]
         
         self.activeTransition = (currentSlide.transition ?? self.slideTransition).previous
-        NotificationCenter.default.post(name: .slideChanged, object: previousSlide)
+
+        Task { @MainActor [newIndex] in
+            try await Task.sleep(nanoseconds: 0)
+            withAnimation {
+                slideIndex = newIndex
+                NotificationCenter.default.post(name: .slideChanged, object: previousSlide)
+            }
+        }
 
     }
 }

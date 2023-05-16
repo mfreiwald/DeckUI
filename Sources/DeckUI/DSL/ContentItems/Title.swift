@@ -21,7 +21,7 @@ public struct Title: ContentItem {
     public func buildView(theme: Theme) -> AnyView {
         return AnyView(
             // TODO: Fix hardcoding of alignment
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .center, spacing: 0) {
                 Text(self.title)
                     .font(theme.title.font)
                     .foregroundColor(theme.title.color)
